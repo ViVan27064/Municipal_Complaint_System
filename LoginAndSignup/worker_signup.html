@@ -1,48 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Worker Signup</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background: linear-gradient(to bottom, #f0f7ff 0%, #ffffff 100%);
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; padding: 2rem 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem 0;
         }
+
         .signup-container {
-            background: #ffffff; padding: 2.5rem 3rem; border-radius: 12px;
+            background: #ffffff;
+            padding: 2.5rem 3rem;
+            border-radius: 12px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-            width: 100%; max-width: 480px; text-align: center;
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
         }
-        h1 { font-size: 1.75rem; font-weight: 600; color: #1a253c; margin-bottom: 2rem; }
-        form { text-align: left; }
-        .form-group { margin-bottom: 1.25rem; }
-        .form-group label { display: block; font-size: 0.9rem; font-weight: 600; color: #333; margin-bottom: 0.5rem; }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #1a253c;
+            margin-bottom: 2rem;
+        }
+
+        form {
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
         .form-group input {
-            width: 100%; padding: 0.85rem 1rem; font-size: 1rem;
-            border: 1px solid #ddd; border-radius: 8px; font-family: inherit;
+            width: 100%;
+            padding: 0.85rem 1rem;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
         }
+
         .form-group input:focus {
-            outline: none; border-color: #007bff;
+            outline: none;
+            border-color: #007bff;
             box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
         }
+
         .signup-button {
-            width: 100%; padding: 0.9rem; border: none; border-radius: 8px;
-            background-color: #007bff; color: white; font-size: 1rem;
-            font-weight: 600; cursor: pointer; transition: background-color 0.2s ease;
+            width: 100%;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 8px;
+            background-color: #007bff;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
         }
-        .signup-button:hover { background-color: #0056b3; }
-        .login-link { text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: #555; }
-        .login-link a { color: #007bff; text-decoration: none; font-weight: 600; }
+
+        .signup-button:hover {
+            background-color: #0056b3;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .login-link a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 600;
+        }
     </style>
 </head>
+
 <body>
     <div class="signup-container">
         <h1>Create Worker Account</h1>
-        
+
         <form action="worker_signup.php" method="POST">
 
             <div class="form-group">
@@ -59,14 +122,8 @@
             </div>
             <div class="form-group">
                 <label for="phone_no">Phone Number</label>
-                <input 
-    type="tel" 
-    id="phone" 
-    name="phone" 
-    pattern="[0-9]{10}" 
-    title="Please enter exactly 10 digits" 
-    required
-  >
+                <input type="tel" id="phone_no" name="phone_no" placeholder="Enter 10-digit phone number"
+                    pattern="[0-9]{10}" title="Please enter exactly 10 digits" required>
             </div>
             <div class="form-group">
                 <label for="department">Department</label>
@@ -74,9 +131,10 @@
             </div>
             <div class="form-group">
                 <label for="supervisor_worker_id">Supervisor Worker ID (Optional)</label>
-                <input type="number" id="supervisor_worker_id" name="supervisor_worker_id" placeholder="Enter ID if applicable">
+                <input type="number" id="supervisor_worker_id" name="supervisor_worker_id"
+                    placeholder="Enter ID if applicable">
             </div>
-            
+
             <button type="submit" class="signup-button">Create Account</button>
         </form>
         <div class="login-link">
@@ -84,4 +142,5 @@
         </div>
     </div>
 </body>
+
 </html>
