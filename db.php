@@ -18,7 +18,8 @@ try {
     );
 } catch (PDOException $e) {
     error_log("DB Connection Failed: " . $e->getMessage());
-    die("Database connection failed.");
+    die("DB ERROR: " . $e->getMessage());
+
 }
 
 /* ---- mysqli compatibility wrapper ---- */
