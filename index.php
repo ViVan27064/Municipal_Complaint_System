@@ -1,12 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Redirecting...</title>
-</head>
-<body>
-<script>
-    window.location.replace("LoginAndSignUp/login.html");
-</script>
-</body>
-</html>
+<?php
+header("Location: LoginAndSignup/login.html");
+exit;
