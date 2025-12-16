@@ -1,11 +1,14 @@
 <?php
-$servername = $_ENV['DB_HOST'] ?? 'localhost'; 
-$username = $_ENV['DB_USERNAME'] ?? 'root';    
-$password = $_ENV['DB_PASSWORD'] ?? ''; 
-$dbname = $_ENV['DB_NAME'] ?? 'complaint_system';
-$conn = new mysqli($servername, $username, $password, $dbname);
+$servername = $_ENV['MYSQLHOST'] ?? 'interchange.proxy.rlwy.net';
+$username   = $_ENV['MYSQLUSER'] ?? 'root';
+$password   = $_ENV['MYSQLPASSWORD'] ?? 'rmXNncOSgkLHoEderbeBGbyzvHVPfFju';
+$dbname     = $_ENV['MYSQLDATABASE'] ?? 'railway';
+$port       = $_ENV['MYSQLPORT'] ?? 50611;
+
+$conn = new mysqli($servername, $username, $password, $dbname, $port);
+
 if ($conn->connect_error) {
-    error_log("Connection Failed: " . $conn->connect_error);
-    die("Database connection failed. Please try again later.");
+    error_log("DB Connection Failed: " . $conn->connect_error);
+    die("Database connection failed.");
 }
 ?>
