@@ -1,14 +1,16 @@
-FROM dunglas/frankenphp:php8.4.15-bookworm
+FROM dunglas/frankenphp:php8.4-bookworm
 
-# Install MySQL PDO driver
-RUN docker-php-ext-install pdo_mysql
+# Install required PHP extensions for MySQL
+RUN docker-php-ext-install mysqli pdo_mysql
 
-# Copy app files
-COPY . /app
+# Set working directory
 WORKDIR /app
 
-# Expose Railway port
+# Copy all project files
+COPY . .
+
+# Railway exposes port 8080 internally
 EXPOSE 8080
 
-# Start PHP server
+# Start PHP built-in server
 CMD ["php", "-S", "0.0.0.0:8080"]
