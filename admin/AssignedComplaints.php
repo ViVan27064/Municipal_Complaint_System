@@ -394,7 +394,7 @@ function priority_badge_class($p)
             <a href="Notifications.php" class="nav-link"><span
                     class="icon icon-bell"></span>Notifications<?php if ($notification_count > 0): ?><span
                         class="notifications-badge"><?php echo htmlspecialchars($notification_count); ?></span><?php endif; ?></a>
-            <a href="Profile.php" class="nav-link"><span class="icon icon-profile"></span>Profile</a>
+            <a href="profile.php" class="nav-link"><span class="icon icon-profile"></span>Profile</a>
         </nav>
     </header>
     <main class="page-container">
