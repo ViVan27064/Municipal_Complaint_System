@@ -40,11 +40,10 @@ $complaint_stmt->bind_param("ii", $complaint_id, $logged_in_citizen_id);
 $complaint_stmt->execute();
 $complaint_result = $complaint_stmt->get_result();
 
-$row = $complaint_result->fetch_assoc();
-if (!$row) {
+$complaint_data = $complaint_result->fetch_assoc();
+if (!$complaint_data) {
     die("Complaint not found or unauthorized access.");
 }
-$complaint_data = $complaint_result->fetch_assoc();
 $complaint_stmt->close();
 
 $notification_sql = "SELECT COUNT(*) AS unread_notifications FROM citizen_notification WHERE citizen_id = ? AND status = 'unread'";
@@ -56,10 +55,8 @@ $notification_data = $notification_result->fetch_assoc();
 $notification_count = $notification_data['unread_notifications'] ?? 0;
 $notification_stmt->close();
 
-$status_class = str_replace('_', '-', strtolower($complaint_data['status']));
-$priority_class = strtolower($complaint_data['severity']);
-
-// $conn->close(); 
+$status_class = str_replace('_', '-', strtolower($complaint_data['status'] ?? ''));
+$priority_class = strtolower($complaint_data['severity'] ?? '');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -185,21 +182,10 @@ $priority_class = strtolower($complaint_data['severity']);
             text-transform: uppercase;
         }
 
-        .status-badge.pending {
-            background-color: var(--primary-blue);
-        }
-
-        .status-badge.in-progress {
-            background-color: var(--warning-orange);
-        }
-
-        .status-badge.resolved {
-            background-color: var(--success-green);
-        }
-
-        .status-badge.rejected {
-            background-color: var(--danger-red);
-        }
+        .status-badge.pending { background-color: var(--primary-blue); }
+        .status-badge.in-progress { background-color: var(--warning-orange); }
+        .status-badge.resolved { background-color: var(--success-green); }
+        .status-badge.rejected { background-color: var(--danger-red); }
 
         .detail-group {
             margin-bottom: 20px;
@@ -278,34 +264,13 @@ $priority_class = strtolower($complaint_data['severity']);
             background-color: var(--primary-blue);
         }
 
-        .icon-map::before {
-            content: '📍';
-        }
-
-        .icon-date::before {
-            content: '📅';
-        }
-
-        .icon-user::before {
-            content: '👤';
-        }
-
-        .icon-register::before {
-            content: '+';
-            font-weight: bold;
-        }
-
-        .icon-my-complaints::before {
-            content: '📄';
-        }
-
-        .icon-notifications::before {
-            content: '🔔';
-        }
-
-        .icon-profile::before {
-            content: '👤';
-        }
+        .icon-map::before { content: '📍'; }
+        .icon-date::before { content: '📅'; }
+        .icon-user::before { content: '👤'; }
+        .icon-register::before { content: '+'; font-weight: bold; }
+        .icon-my-complaints::before { content: '📄'; }
+        .icon-notifications::before { content: '🔔'; }
+        .icon-profile::before { content: '👤'; }
     </style>
 </head>
 
@@ -313,10 +278,8 @@ $priority_class = strtolower($complaint_data['severity']);
     <header class="header">
         <a href="../home.php" class="logo">MCCCTS Citizen</a>
         <nav class="nav-links">
-            <a href="../RegisterComplaint/file_complaint.php" class="nav-link"><span class="icon icon-register"></span>
-                Register Complaint</a>
-            <a href="../MyComplaints/MyComplaintsPend.php" class="nav-link active"><span
-                    class="icon icon-my-complaints"></span> My Complaints</a>
+            <a href="../RegisterComplaint/file_complaint.php" class="nav-link"><span class="icon icon-register"></span> Register Complaint</a>
+            <a href="../MyComplaints/MyComplaintsPend.php" class="nav-link active"><span class="icon icon-my-complaints"></span> My Complaints</a>
             <a href="../NotificationsCitizen/Notifications.php" class="nav-link">
                 <span class="icon icon-notifications"></span> Notifications
                 <?php if ($notification_count > 0): ?>
@@ -329,9 +292,7 @@ $priority_class = strtolower($complaint_data['severity']);
     <main class="details-container">
         <div class="details-card">
             <div class="page-header">
-                <h1>Complaint Details (ID:
-                    C<?php echo str_pad(htmlspecialchars($complaint_data['complaint_id']), 3, '0', STR_PAD_LEFT); ?>)
-                </h1>
+                <h1>Complaint Details (ID: C<?php echo str_pad(htmlspecialchars($complaint_data['complaint_id']), 3, '0', STR_PAD_LEFT); ?>)</h1>
                 <span class="status-badge <?php echo $status_class; ?>">
                     <?php echo htmlspecialchars(str_replace('_', ' ', $complaint_data['status'])); ?>
                 </span>
@@ -362,8 +323,7 @@ $priority_class = strtolower($complaint_data['severity']);
                 <?php if ($complaint_data['resolved_date']): ?>
                     <div class="detail-row">
                         <span class="detail-label">Resolved Date:</span>
-                        <span
-                            style="font-weight: 600; color: var(--success-green);"><?php echo htmlspecialchars(date('F j, Y', strtotime($complaint_data['resolved_date']))); ?></span>
+                        <span style="font-weight: 600; color: var(--success-green);"><?php echo htmlspecialchars(date('F j, Y', strtotime($complaint_data['resolved_date']))); ?></span>
                     </div>
                 <?php endif; ?>
             </div>
