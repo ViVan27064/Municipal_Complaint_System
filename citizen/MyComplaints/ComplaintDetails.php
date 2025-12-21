@@ -3,7 +3,7 @@ session_start();
 include '../../db.php';
 
 if (!isset($_SESSION['citizen_id'])) {
-    header("Location: LoginAndSignup/login.html");
+    header("Location: ../../LoginAndSignup/login.html");
     exit();
 }
 
