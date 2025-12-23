@@ -35,7 +35,7 @@ $w_res = $conn->query($w_sql);
 while ($row = $w_res->fetch_assoc()) {
     $workers[] = $row;
 }
-$c_sql = "SELECT c.complaint_id,c.category,c.description,c.severity,c.status,c.location,c.filed_date,cz.name AS citizen_name,cz.address AS citizen_address,w.name AS worker_name,w.department AS worker_dept FROM complaint c JOIN citizen cz ON c.citizen_id=cz.citizen_id LEFT JOIN worker w ON c.worker_id=w.worker_id WHERE c.worker_id IS NULL AND c.status='pending' ORDER BY c.filed_date DESC,c.complaint_id DESC";
+$c_sql = "SELECT c.complaint_id,c.category,c.description,c.severity,c.status,c.location,c.filed_date,cz.name AS citizen_name,c.location AS citizen_address,w.name AS worker_name,w.department AS worker_dept FROM complaint c JOIN citizen cz ON c.citizen_id=cz.citizen_id LEFT JOIN worker w ON c.worker_id=w.worker_id WHERE c.worker_id IS NULL AND c.status='pending' ORDER BY c.filed_date DESC,c.complaint_id DESC";
 $c_res = $conn->query($c_sql);
 function status_badge_class($s)
 {
@@ -338,19 +338,17 @@ function priority_badge_class($p)
         }
 
         .view-btn {
-            padding: 8px 18px;
-            border-radius: 8px;
+            background: none;
             border: 1px solid var(--border-color);
-            background-color: #fff;
-            font-size: .9rem;
+            color: var(--text-dark);
+            padding: 10px 25px;
+            border-radius: 6px;
+            text-decoration: none;
             font-weight: 500;
-            cursor: pointer;
-            transition: .2s;
-            white-space: nowrap;
+            transition: background-color 0.2s;
         }
-
         .view-btn:hover {
-            background-color: #f1f3f5;
+            background-color: var(--background-light);
         }
 
         @media(max-width:768px) {
@@ -376,12 +374,13 @@ function priority_badge_class($p)
 
             .assign-btn,
             .view-btn {
-                width: 100%;
+                height: 38px;
+                display: flex;
+                align-items: center;
             }
         }
     </style>
 </head>
-
 <body>
     <header class="header">
         <a href="home.php" class="logo"><span class="logo-icon"></span><span>MCCCTS - Admin</span></a>
@@ -389,7 +388,9 @@ function priority_badge_class($p)
             <a href="AllComplaints.php" class="nav-link active"><span class="icon icon-doc"></span>All Complaints</a>
             <a href="AssignedComplaints.php" class="nav-link"><span class="icon icon-users"></span>Assigned
                 Complaints</a>
-            <a href="Notifications.php" class="nav-link"><span
+            <a href="Notifications.php"
+                class="nav-link<?php if (basename($_SERVER['PHP_SELF']) === 'Notifications.php')
+                    echo ' active'; ?>"><span
                     class="icon icon-bell"></span>Notifications<?php if ($notification_count > 0): ?><span
                         class="notifications-badge"><?php echo htmlspecialchars($notification_count); ?></span><?php endif; ?></a>
             <a href="profile.php" class="nav-link"><span class="icon icon-profile"></span>Profile</a>
@@ -422,9 +423,18 @@ function priority_badge_class($p)
                             <?php echo htmlspecialchars(date('Y-m-d', strtotime($c['filed_date']))); ?></span></div>
                 </div>
                 <div class="card-footer">
-                    <form method="post" style="display:flex;gap:12px;flex:1;">
+                    <form method="post" style="width:100%;">
+                        <div style="display:flex; justify-content:flex-end; gap:10px; margin-bottom:10px;">
+                            <a href="ViewComplaint.php?id=<?php echo $c['complaint_id']; ?>" class="view-btn">
+                                View Details
+                            </a>
+                            <button type="submit" name="assign_worker" class="assign-btn">
+                                Assign
+                            </button>
+                        </div>
                         <div class="form-fields">
                             <input type="hidden" name="complaint_id" value="<?php echo $c['complaint_id']; ?>">
+
                             <select name="worker_id" class="worker-select">
                                 <option value="0">Select worker</option>
                                 <?php foreach ($workers as $w): ?>
@@ -444,7 +454,6 @@ function priority_badge_class($p)
                                 ?>
                             </select>
                         </div>
-                        <button type="submit" name="assign_worker" class="assign-btn">Assign Worker</button>
                     </form>
                 </div>
             </div>

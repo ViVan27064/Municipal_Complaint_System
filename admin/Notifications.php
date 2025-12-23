@@ -257,7 +257,9 @@ $count_stmt->close();
             <a href="AllComplaints.php" class="nav-link"><span class="icon icon-doc"></span>All Complaints</a>
             <a href="AssignedComplaints.php" class="nav-link"><span class="icon icon-users"></span>Assigned
                 Complaints</a>
-            <a href="Notifications.php" class="nav-link active"><span
+            <a href="Notifications.php"
+                class="nav-link<?php if (basename($_SERVER['PHP_SELF']) === 'Notifications.php')
+                    echo ' active'; ?>"><span
                     class="icon icon-bell"></span>Notifications<?php if ($notification_count > 0): ?><span
                         class="notifications-badge"><?php echo htmlspecialchars($notification_count); ?></span><?php endif; ?></a>
             <a href="profile.php" class="nav-link"><span class="icon icon-profile"></span>Profile</a>
