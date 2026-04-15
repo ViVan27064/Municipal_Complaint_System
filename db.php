@@ -1,9 +1,9 @@
 <?php
-$servername = $_ENV['MYSQLHOST'] ?? 'interchange.proxy.rlwy.net';
-$username   = $_ENV['MYSQLUSER'] ?? 'root';
-$password   = $_ENV['MYSQLPASSWORD'] ?? 'rmXNncOSgkLHoEderbeBGbyzvHVPfFju';
-$dbname     = $_ENV['MYSQLDATABASE'] ?? 'railway';
-$port       = $_ENV['MYSQLPORT'] ?? 50611;
+$servername = $_ENV['MYSQLHOST'] ;
+$username   = $_ENV['MYSQLUSER'] ;
+$password   = $_ENV['MYSQLPASSWORD'] ;
+$dbname     = $_ENV['MYSQLDATABASE'] ;
+$port       = $_ENV['MYSQLPORT'] ;
 
 $conn = new mysqli($servername, $username, $password, $dbname, $port);
 
