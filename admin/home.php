@@ -299,9 +299,8 @@ $notification_count = $data['unread_notifications'] ?? 0;
             <a href="AllComplaints.php" class="nav-link"><span class="icon icon-doc"></span>All Complaints</a>
             <a href="AssignedComplaints.php" class="nav-link"><span class="icon icon-users"></span>Assigned
                 Complaints</a>
-            <a href="Notifications.php"
-                class="nav-link<?php if (basename($_SERVER['PHP_SELF']) === 'Notifications.php')
-                    echo ' active'; ?>"><span
+            <a href="Notifications.php" class="nav-link<?php if (basename($_SERVER['PHP_SELF']) === 'Notifications.php')
+                echo ' active'; ?>"><span
                     class="icon icon-bell"></span>Notifications<?php if ($notification_count > 0): ?><span
                         class="notifications-badge"><?php echo htmlspecialchars($notification_count); ?></span><?php endif; ?></a>
             <a href="profile.php" class="nav-link"><span class="icon icon-profile"></span>Profile</a>
@@ -314,28 +313,31 @@ $notification_count = $data['unread_notifications'] ?? 0;
             <div class="stat-card stat-total">
                 <div>
                     <div class="stat-label"><span>📄</span><span>Total Complaints</span></div>
-                    <div class="stat-value"><?php echo htmlspecialchars($total_count); ?></div>
+                    <div class="stat-value" id="total_count"><?php echo htmlspecialchars($total_count); ?></div>
                     <div class="stat-meta">All complaints filed by citizens</div>
                 </div>
             </div>
+
             <div class="stat-card stat-pending">
                 <div>
                     <div class="stat-label"><span>⏱️</span><span>Pending Assignment</span></div>
-                    <div class="stat-value"><?php echo htmlspecialchars($pending_assign); ?></div>
+                    <div class="stat-value" id="pending_assign"><?php echo htmlspecialchars($pending_assign); ?></div>
                     <div class="stat-meta">Complaints waiting for worker assignment</div>
                 </div>
             </div>
+
             <div class="stat-card stat-assigned">
                 <div>
                     <div class="stat-label"><span>👷</span><span>Assigned</span></div>
-                    <div class="stat-value"><?php echo htmlspecialchars($assigned_count); ?></div>
+                    <div class="stat-value" id="assigned_count"><?php echo htmlspecialchars($assigned_count); ?></div>
                     <div class="stat-meta">Complaints assigned to workers</div>
                 </div>
             </div>
+
             <div class="stat-card stat-resolved">
                 <div>
                     <div class="stat-label"><span>✔️</span><span>Resolved</span></div>
-                    <div class="stat-value"><?php echo htmlspecialchars($resolved_count); ?></div>
+                    <div class="stat-value" id="resolved_count"><?php echo htmlspecialchars($resolved_count); ?></div>
                     <div class="stat-meta">Complaints marked as resolved</div>
                 </div>
             </div>
@@ -357,6 +359,13 @@ $notification_count = $data['unread_notifications'] ?? 0;
             </a>
         </section>
     </main>
+    <script src="../includes/socket-functions.js"></script>
+    <?php include("../includes/socket.php"); ?>
+    <script>
+        socket.on("newComplaint", () => {
+            refreshDashboard();
+        });
+    </script>
 </body>
 
 </html>

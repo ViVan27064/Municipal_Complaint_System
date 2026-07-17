@@ -460,6 +460,9 @@ function priority_badge_class($p)
             </div>
         <?php endwhile; ?>
     </main>
+    <script src="../includes/socket-functions.js"></script>
+
+    <?php include("../includes/socket.php"); ?>
 </body>
 
 </html>

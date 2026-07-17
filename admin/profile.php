@@ -293,7 +293,9 @@ $notif_stmt->close();
 
         </div>
     </div>
+    <script src="../includes/socket-functions.js"></script>
 
+    <?php include("../includes/socket.php"); ?>
 </body>
 
 </html>

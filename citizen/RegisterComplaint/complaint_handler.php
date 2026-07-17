@@ -29,6 +29,30 @@ $stmt->bind_param("issss", $citizen_id, $category, $severity, $location, $descri
 $stmt->execute();
 
 $complaint_id = $stmt->insert_id;
+$url = "https://mccts-socket-server.onrender.com/new-complaint";
+
+$data = [
+    "complaint_id" => $complaint_id,
+    "citizen_id"   => $citizen_id,
+    "category"     => $category,
+    "severity"     => $severity,
+    "location"     => $location,
+    "description"  => $description
+];
+
+$ch = curl_init($url);
+
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json"
+]);
+
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$response = curl_exec($ch);
+
+curl_close($ch);
 
 $message = "Your complaint '$category' (#$complaint_id) has been successfully submitted.";
 $notif_stmt = $conn->prepare("INSERT INTO citizen_notification (citizen_id, complaint_id, message, date_time) VALUES (?, ?, ?, NOW())");

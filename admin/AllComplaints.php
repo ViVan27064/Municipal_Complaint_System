@@ -347,6 +347,7 @@ function priority_badge_class($p)
             font-weight: 500;
             transition: background-color 0.2s;
         }
+
         .view-btn:hover {
             background-color: var(--background-light);
         }
@@ -381,6 +382,7 @@ function priority_badge_class($p)
         }
     </style>
 </head>
+
 <body>
     <header class="header">
         <a href="home.php" class="logo"><span class="logo-icon"></span><span>MCCCTS - Admin</span></a>
@@ -388,9 +390,8 @@ function priority_badge_class($p)
             <a href="AllComplaints.php" class="nav-link active"><span class="icon icon-doc"></span>All Complaints</a>
             <a href="AssignedComplaints.php" class="nav-link"><span class="icon icon-users"></span>Assigned
                 Complaints</a>
-            <a href="Notifications.php"
-                class="nav-link<?php if (basename($_SERVER['PHP_SELF']) === 'Notifications.php')
-                    echo ' active'; ?>"><span
+            <a href="Notifications.php" class="nav-link<?php if (basename($_SERVER['PHP_SELF']) === 'Notifications.php')
+                echo ' active'; ?>"><span
                     class="icon icon-bell"></span>Notifications<?php if ($notification_count > 0): ?><span
                         class="notifications-badge"><?php echo htmlspecialchars($notification_count); ?></span><?php endif; ?></a>
             <a href="profile.php" class="nav-link"><span class="icon icon-profile"></span>Profile</a>
@@ -398,67 +399,78 @@ function priority_badge_class($p)
     </header>
     <main class="page-container">
         <h1 class="page-title">All Complaints</h1>
-        <?php while ($c = $c_res->fetch_assoc()): ?>
-            <div class="complaint-card">
-                <div class="card-header">
-                    <div>
-                        <div class="card-title"><?php echo htmlspecialchars($c['category']); ?></div>
-                        <div class="card-meta">ID: C<?php echo str_pad($c['complaint_id'], 3, '0', STR_PAD_LEFT); ?></div>
-                    </div>
-                    <div class="badge-row">
-                        <span
-                            class="badge-status <?php echo status_badge_class($c['status']); ?>"><?php echo htmlspecialchars(ucwords(str_replace('_', ' ', $c['status']))); ?></span>
-                        <span
-                            class="badge-priority <?php echo priority_badge_class($c['severity']); ?>"><?php echo htmlspecialchars(ucfirst(strtolower($c['severity']))); ?>
-                            Priority</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="info-row"><span class="info-icon">👤</span><span>Citizen:
-                            <?php echo htmlspecialchars($c['citizen_name']); ?></span></div>
-                    <div class="info-row"><span
-                            class="info-icon">📍</span><span><?php echo htmlspecialchars($c['citizen_address']); ?></span>
-                    </div>
-                    <div class="info-row"><span class="info-icon">📅</span><span>Filed:
-                            <?php echo htmlspecialchars(date('Y-m-d', strtotime($c['filed_date']))); ?></span></div>
-                </div>
-                <div class="card-footer">
-                    <form method="post" style="width:100%;">
-                        <div style="display:flex; justify-content:flex-end; gap:10px; margin-bottom:10px;">
-                            <a href="ViewComplaint.php?id=<?php echo $c['complaint_id']; ?>" class="view-btn">
-                                View Details
-                            </a>
-                            <button type="submit" name="assign_worker" class="assign-btn">
-                                Assign
-                            </button>
+        <div id="complaintsContainer">
+            <?php while ($c = $c_res->fetch_assoc()): ?>
+                <div class="complaint-card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title"><?php echo htmlspecialchars($c['category']); ?></div>
+                            <div class="card-meta">ID: C<?php echo str_pad($c['complaint_id'], 3, '0', STR_PAD_LEFT); ?>
+                            </div>
                         </div>
-                        <div class="form-fields">
-                            <input type="hidden" name="complaint_id" value="<?php echo $c['complaint_id']; ?>">
+                        <div class="badge-row">
+                            <span
+                                class="badge-status <?php echo status_badge_class($c['status']); ?>"><?php echo htmlspecialchars(ucwords(str_replace('_', ' ', $c['status']))); ?></span>
+                            <span
+                                class="badge-priority <?php echo priority_badge_class($c['severity']); ?>"><?php echo htmlspecialchars(ucfirst(strtolower($c['severity']))); ?>
+                                Priority</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-row"><span class="info-icon">👤</span><span>Citizen:
+                                <?php echo htmlspecialchars($c['citizen_name']); ?></span></div>
+                        <div class="info-row"><span
+                                class="info-icon">📍</span><span><?php echo htmlspecialchars($c['citizen_address']); ?></span>
+                        </div>
+                        <div class="info-row"><span class="info-icon">📅</span><span>Filed:
+                                <?php echo htmlspecialchars(date('Y-m-d', strtotime($c['filed_date']))); ?></span></div>
+                    </div>
+                    <div class="card-footer">
+                        <form method="post" style="width:100%;">
+                            <div style="display:flex; justify-content:flex-end; gap:10px; margin-bottom:10px;">
+                                <a href="ViewComplaint.php?id=<?php echo $c['complaint_id']; ?>" class="view-btn">
+                                    View Details
+                                </a>
+                                <button type="submit" name="assign_worker" class="assign-btn">
+                                    Assign
+                                </button>
+                            </div>
+                            <div class="form-fields">
+                                <input type="hidden" name="complaint_id" value="<?php echo $c['complaint_id']; ?>">
 
-                            <select name="worker_id" class="worker-select">
-                                <option value="0">Select worker</option>
-                                <?php foreach ($workers as $w): ?>
-                                    <option value="<?php echo $w['worker_id']; ?>">
-                                        <?php echo htmlspecialchars($w['name'] . ($w['department'] ? ' - ' . $w['department'] : '')); ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                            <select name="severity" class="severity-select">
-                                <?php
-                                $current = strtolower($c['severity'] ?? 'low');
-                                $opts = ['low' => 'Low', 'medium' => 'Medium', 'high' => 'High', 'critical' => 'Critical'];
-                                foreach ($opts as $val => $label) {
-                                    $sel = $current === $val ? 'selected' : '';
-                                    echo "<option value=\"$val\" $sel>$label Severity</option>";
-                                }
-                                ?>
-                            </select>
-                        </div>
-                    </form>
+                                <select name="worker_id" class="worker-select">
+                                    <option value="0">Select worker</option>
+                                    <?php foreach ($workers as $w): ?>
+                                        <option value="<?php echo $w['worker_id']; ?>">
+                                            <?php echo htmlspecialchars($w['name'] . ($w['department'] ? ' - ' . $w['department'] : '')); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <select name="severity" class="severity-select">
+                                    <?php
+                                    $current = strtolower($c['severity'] ?? 'low');
+                                    $opts = ['low' => 'Low', 'medium' => 'Medium', 'high' => 'High', 'critical' => 'Critical'];
+                                    foreach ($opts as $val => $label) {
+                                        $sel = $current === $val ? 'selected' : '';
+                                        echo "<option value=\"$val\" $sel>$label Severity</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </div>
-        <?php endwhile; ?>
+            <?php endwhile; ?>
+        </div>
     </main>
+    <script src="../includes/socket-functions.js"></script>
+
+    <?php include("../includes/socket.php"); ?>
+    <script>
+        socket.on("newComplaint", (data) => {
+            refreshComplaintTable(data.complaint_id);
+        });
+    </script>
 </body>
 
 </html>

@@ -329,6 +329,9 @@ $priority_class = strtolower($complaint_data['severity']);
 
         </div>
     </main>
+    <script src="../includes/socket-functions.js"></script>
+
+    <?php include("../includes/socket.php"); ?>
 </body>
 
 </html>
